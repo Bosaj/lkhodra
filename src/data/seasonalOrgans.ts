@@ -2080,12 +2080,37 @@ export const PRODUCE_SEASONAL_ORGAN_ROLES: Record<string, ProduceSeasonalOrganRo
 
 import { WORLD_AND_MOROCCAN_EXTRA_PRODUCE } from './worldAndMoroccanProduce'
 import { WORLD_PRODUCE_PART2 } from './worldProducePart2'
+import { VERIFIED_PRODUCE_IMAGES } from './verifiedProduceImages'
 
 const EXTRA_LOOKUP = [...WORLD_AND_MOROCCAN_EXTRA_PRODUCE, ...WORLD_PRODUCE_PART2]
 
 export function getProduceSeasonalOrganRole(produceId: string): ProduceSeasonalOrganRole | undefined {
+  const verified = VERIFIED_PRODUCE_IMAGES[produceId]
+  const localMain = `/images/produce/${produceId}-1.jpg`
+  const img1 = verified?.[0] || localMain
+  const img2 = verified?.[1] || img1
+  const img3 = verified?.[2] || img1
+
   const explicit = PRODUCE_SEASONAL_ORGAN_ROLES[produceId]
-  if (explicit) return explicit
+  if (explicit) {
+    return {
+      ...explicit,
+      gallery: [
+        {
+          ...(explicit.gallery[0] || { captionAr: produceId, captionFr: produceId, captionEn: produceId }),
+          url: img1,
+        },
+        {
+          ...(explicit.gallery[1] || explicit.gallery[0] || { captionAr: produceId, captionFr: produceId, captionEn: produceId }),
+          url: img2,
+        },
+        {
+          ...(explicit.gallery[2] || explicit.gallery[0] || { captionAr: produceId, captionFr: produceId, captionEn: produceId }),
+          url: img3,
+        },
+      ],
+    }
+  }
 
   const item = EXTRA_LOOKUP.find((p) => p.id === produceId)
   if (!item) return undefined
@@ -2134,12 +2159,24 @@ export function getProduceSeasonalOrganRole(produceId: string): ProduceSeasonalO
       fr: 'Portion quotidienne fraîche (150 à 200 g) durant les mois de pleine saison.',
       en: 'Fresh daily serving (150–200g) during peak harvest months for optimal organ recovery.',
     },
-    gallery: item.galleryImages || [
+    gallery: [
       {
-        url: item.imageUrl,
-        captionAr: item.nameDarijaArabic,
-        captionFr: item.nameFrench,
-        captionEn: item.nameEnglish,
+        url: img1,
+        captionAr: `${item.nameDarijaArabic} — الثمرة الكاملة`,
+        captionFr: `${item.nameFrench} — Spécimen entier`,
+        captionEn: `${item.nameEnglish} — Whole specimen`,
+      },
+      {
+        url: img2,
+        captionAr: `${item.nameDarijaArabic} — القيمة الغذائية واللب`,
+        captionFr: `${item.nameFrench} — Coupe & texture`,
+        captionEn: `${item.nameEnglish} — Interior & texture`,
+      },
+      {
+        url: img3,
+        captionAr: `${item.nameDarijaArabic} — في التيروار والمطبخ`,
+        captionFr: `${item.nameFrench} — Terroir & art culinaire`,
+        captionEn: `${item.nameEnglish} — Terroir & culinary use`,
       },
     ],
   }

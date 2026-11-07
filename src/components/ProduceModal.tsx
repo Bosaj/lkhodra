@@ -82,6 +82,12 @@ export const ProduceModal: React.FC<ProduceModalProps> = ({
             <img
               src={activeHeroPhoto.url}
               alt={primaryName}
+              onError={(e) => {
+                const fallbackLocal = `/images/produce/${item.id}-1.jpg`
+                if (e.currentTarget.src && !e.currentTarget.src.endsWith(fallbackLocal)) {
+                  e.currentTarget.src = fallbackLocal
+                }
+              }}
               className="h-full w-full object-cover opacity-90 transition-all duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#111610] via-[#111610]/55 to-black/40" />
@@ -250,6 +256,12 @@ export const ProduceModal: React.FC<ProduceModalProps> = ({
                       <img
                         src={photo.url}
                         alt={photo.captionEn}
+                        onError={(e) => {
+                          const fallbackLocal = `/images/produce/${item.id}-1.jpg`
+                          if (e.currentTarget.src && !e.currentTarget.src.endsWith(fallbackLocal)) {
+                            e.currentTarget.src = fallbackLocal
+                          }
+                        }}
                         className="h-full w-full object-cover"
                         loading="lazy"
                       />

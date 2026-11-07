@@ -129,7 +129,14 @@ export const ProduceCard: React.FC<ProduceCardProps> = ({
             src={activeImgSrc}
             alt={displayName}
             loading="lazy"
-            onError={() => setImgError(true)}
+            onError={(e) => {
+              const fallbackLocal = `/images/produce/${item.id}-1.jpg`
+              if (e.currentTarget.src && !e.currentTarget.src.endsWith(fallbackLocal)) {
+                e.currentTarget.src = fallbackLocal
+              } else {
+                setImgError(true)
+              }
+            }}
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
           />
         ) : (
@@ -200,17 +207,12 @@ export const ProduceCard: React.FC<ProduceCardProps> = ({
                       setImgError(false)
                       setActivePhotoIndex(idx)
                     }}
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded-lg text-[11px] font-bold cursor-pointer transition-all ${
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold cursor-pointer transition-all ${
                       activePhotoIndex === idx
                         ? 'bg-[#10b981] text-[#050b07] shadow-sm'
                         : 'text-[#a7bfb0] hover:text-white hover:bg-white/10'
                     }`}
                   >
-                    <img
-                      src={g.url}
-                      alt=""
-                      className="w-4 h-4 rounded object-cover border border-black/20 shrink-0"
-                    />
                     <span>{tabText}</span>
                   </button>
                 )

@@ -4,6 +4,7 @@ import { MORE_MOROCCAN_PRODUCE } from './moreProduce'
 import { WORLD_AND_MOROCCAN_EXTRA_PRODUCE } from './worldAndMoroccanProduce'
 import { WORLD_PRODUCE_PART2 } from './worldProducePart2'
 import { PRODUCE_SEASONAL_ORGAN_ROLES } from './seasonalOrgans'
+import { VERIFIED_PRODUCE_IMAGES } from './verifiedProduceImages'
 
 const CORE_MOROCCAN_PRODUCE: ProduceItem[] = [
   {
@@ -1496,18 +1497,56 @@ const RAW_ALL_PRODUCE: ProduceItem[] = [
   ...WORLD_PRODUCE_PART2,
 ]
 
+const DUPLICATE_SPECIES_IDS = new Set<string>([
+  'coing-sferjel',
+  'oignon-rouge-besla',
+  'ail-rouge-touma',
+  'navet-left',
+  'gombo-mloukhia',
+  'courge-rouge-ger3a',
+])
+
 const SEEN_IDS = new Set<string>()
 
 export const MOROCCAN_PRODUCE: ProduceItem[] = RAW_ALL_PRODUCE.filter((item) => {
+  if (DUPLICATE_SPECIES_IDS.has(item.id)) return false
   if (SEEN_IDS.has(item.id)) return false
   SEEN_IDS.add(item.id)
   return true
 }).map((item) => {
+  const verified = VERIFIED_PRODUCE_IMAGES[item.id]
+  const localMain = `/images/produce/${item.id}-1.jpg`
+  const img1 = verified?.[0] || localMain
+  const img2 = verified?.[1] || img1
+  const img3 = verified?.[2] || img1
+
   const role = PRODUCE_SEASONAL_ORGAN_ROLES[item.id]
-  if (!role) return item
+  const baseGallery = role?.gallery || item.galleryImages || []
+
+  const galleryImages = [
+    {
+      url: img1,
+      captionAr: baseGallery[0]?.captionAr || `${item.nameDarijaArabic} — الثمرة الكاملة`,
+      captionFr: baseGallery[0]?.captionFr || `${item.nameFrench} — Spécimen entier`,
+      captionEn: baseGallery[0]?.captionEn || `${item.nameEnglish} — Whole specimen`,
+    },
+    {
+      url: img2,
+      captionAr: baseGallery[1]?.captionAr || `${item.nameDarijaArabic} — القيمة الغذائية واللب`,
+      captionFr: baseGallery[1]?.captionFr || `${item.nameFrench} — Coupe & texture`,
+      captionEn: baseGallery[1]?.captionEn || `${item.nameEnglish} — Interior & texture`,
+    },
+    {
+      url: img3,
+      captionAr: baseGallery[2]?.captionAr || `${item.nameDarijaArabic} — في التيروار والمطبخ`,
+      captionFr: baseGallery[2]?.captionFr || `${item.nameFrench} — Terroir & art culinaire`,
+      captionEn: baseGallery[2]?.captionEn || `${item.nameEnglish} — Terroir & culinary use`,
+    },
+  ]
+
   return {
     ...item,
-    imageUrl: role.gallery[0]?.url || item.imageUrl,
-    galleryImages: role.gallery,
+    imageUrl: img1,
+    galleryImages,
   }
 })
