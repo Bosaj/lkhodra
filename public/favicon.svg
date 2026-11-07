@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="28" fill="#0a0d09"/>
+  <rect x="6" y="6" width="108" height="108" rx="22" stroke="#4ea865" stroke-opacity="0.35" stroke-width="2"/>
+  <circle cx="60" cy="64" r="32" fill="url(#pomegranate)" stroke="#e59a38" stroke-width="2.5"/>
+  <path d="M52 32L56 23L60 30L64 23L68 32" stroke="#e59a38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M60 32C60 20 75 14 84 20C78 29 68 33 60 32Z" fill="#4ea865"/>
+  <path d="M60 32C60 22 46 16 37 22C43 30 52 33 60 32Z" fill="#34834a"/>
+  <circle cx="50" cy="58" r="4" fill="#f5f2e9" fill-opacity="0.85"/>
+  <circle cx="62" cy="54" r="4" fill="#f5f2e9" fill-opacity="0.85"/>
+  <circle cx="70" cy="63" r="4" fill="#f5f2e9" fill-opacity="0.85"/>
+  <circle cx="55" cy="69" r="4" fill="#f5f2e9" fill-opacity="0.85"/>
+  <circle cx="65" cy="74" r="4" fill="#f5f2e9" fill-opacity="0.85"/>
+  <defs>
+    <radialGradient id="pomegranate" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50) rotate(45) scale(52)">
+      <stop stop-color="#e86f2c"/>
+      <stop offset="0.55" stop-color="#b8332a"/>
+      <stop offset="1" stop-color="#5c1612"/>
+    </radialGradient>
+  </defs>
+</svg>
